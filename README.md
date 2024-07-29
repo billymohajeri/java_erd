@@ -8,6 +8,7 @@ Do keep in mind that:
 
 Assignment delivery:
 - Team lead to fork this repo and then the team memembers should fork the team lead's repo.
+- Or feel free to follow a specific approach that you as a team would agree on.
 - Team lead to open a PR against Integrify's repo
 - Share an image of your ERD Or share a link to an online playground
 
