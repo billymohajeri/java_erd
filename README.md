@@ -1,4 +1,5 @@
 Design an ERD for an E-commerce app (the implementation will come later as we progress in the program)
+
 You should have at least 3 entities: Product, User, and Order
 
 Do keep in mind that:
