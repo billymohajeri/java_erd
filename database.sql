@@ -64,6 +64,12 @@ CREATE TABLE wishlist (
     name VARCHAR(50)
 );
 
+CREATE TABLE wishlist_product (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    wishlist_id UUID NOT NULL REFERENCES wishlists(id),
+    product_id UUID NOT NULL REFERENCES products(id)
+);
+
 
 
 
