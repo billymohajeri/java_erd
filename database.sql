@@ -29,6 +29,11 @@ CREATE TABLE products (
     rating NUMERIC(3,2)
 );
 
+CREATE TABLE orders_details (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID NOT NULL REFERENCES orders(id),
+    product_id UUID NOT NULL REFERENCES products(id)
+);
 
 
 
