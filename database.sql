@@ -49,6 +49,14 @@ CREATE TABLE payments (
     amount NUMERIC(10,2) NOT NULL
 );
 
+CREATE TABLE reviews (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    product_id UUID NOT NULL REFERENCES products(id),
+    review TEXT NOT NULL,
+    rating NUMERIC(3,2) NOT NULL,
+    image VARCHAR(255)
+);
+
 
 
 
