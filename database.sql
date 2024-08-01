@@ -191,11 +191,58 @@ INSERT INTO wishlist_product (id, wishlist_id, product_id) VALUES
 -- QUERIES --
 
 -- Select All Users
+SELECT * FROM users;
+
 -- Select All Orders with User Information
+SELECT 
+orders.date,
+orders.status,
+orders.address AS order_address,
+users.first_name,
+users.last_name,
+users.email,
+users.phone
+FROM orders
+JOIN users
+ON orders.user_id=users.id;
+
 -- Select All Products in an Order
+SELECT
+orders.id AS order_id,
+orders.date,
+products.name AS product_name,
+products.price,
+FROM orders
+JOIN products
+ON products.id=product_id
+
+
 -- Select All Products in a User's Cart
+
+
 -- Select All Payments with Order Information
+SELECT
+orders.date,
+orders.status,
+orders.address,
+payments.method,
+payments.amount
+FROM payments
+JOIN orders
+ON payments.order_id=orders.id;
+
 -- Select All Reviews for a Product
+SELECT
+products.name,
+reviews.review,
+reviews.rating
+FROM products
+JOIN reviews
+ON products.id=product_id;
+
+
+
+
 -- Select All Products in a Wishlist
 -- Select All Products in a Wishlist using wishlist_product
 -- Count Total Users
