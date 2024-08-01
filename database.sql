@@ -42,6 +42,13 @@ CREATE TABLE carts (
     quantity INTEGER NOT NULL
 );
 
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_id UUID NOT NULL REFERENCES orders(id),
+    method VARCHAR(50) NOT NULL,
+    amount NUMERIC(10,2) NOT NULL
+);
+
 
 
 
