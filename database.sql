@@ -44,10 +44,17 @@ CREATE TABLE IF NOT EXISTS billyApp.order_product (
 
 CREATE TABLE IF NOT EXISTS billyApp.cart (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id),
+    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id)
 );
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS billyApp.cart_product (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    cart_id UUID NOT NULL REFERENCES billyApp.cart(id),
+    product_id UUID NOT NULL REFERENCES billyApp.product(id),
+    quantity INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS billyApp.payment (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     order_id UUID NOT NULL REFERENCES orders(id),
     method VARCHAR(50) NOT NULL,
