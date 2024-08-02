@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS billyApp.wishlist_product (
 );
 
 
- \dt billyApp.*
+\dt billyApp.*
 
 \d billyApp.*
 
@@ -233,8 +233,19 @@ INSERT INTO billyApp.cart_product (cart_id, product_id, quantity) VALUES
 
 -- QUERIES --
 
--- Select All Users
+-- Select All Data
+
+SELECT * FROM billyApp.cart;
+SELECT * FROM billyApp.cart_product;
+SELECT * FROM billyApp.order;
+SELECT * FROM billyApp.order_product;
+SELECT * FROM billyApp.payment;
+SELECT * FROM billyApp.product;
+SELECT * FROM billyApp.review;
 SELECT * FROM billyApp.user;
+SELECT * FROM billyApp.wishlist;
+SELECT * FROM billyApp.wishlist_product;
+
 
 -- Select All Orders with User Information
 SELECT 
@@ -307,47 +318,6 @@ SELECT COUNT(*) AS total_orders FROM orders;
 
 -- Count Total Products
 SELECT COUNT(*) AS total_products FROM products;
-
--- Count Total Reviews
--- Count Total Payments
--- Count Total Products in a Cart per User
--- Count Total Products in a Wishlist per User
--- Sum Total Amount Spent by User
--- Sum Total Quantity of Products in Orders
--- Group Orders by Status
--- Group Products by Color
--- Group Reviews by Rating
--- Average Rating for Each Product
--- List Users with Most Orders
--- List Products with Most Reviews
--- List Users with the Most Products in Cart
--- List Users with the Most Products in Wishlist
--- Select Orders Placed in the Last Month
--- Select Top 5 Most Expensive Products
--- Select Top 5 Highest Rated Products
--- Select Users Who Have Placed No Orders
--- Select Users Who Have Never Added Products to Cart
--- Select Users Who Have Never Added Products to Wishlist
--- Select Orders with Specific Status (e.g., 'pending')
--- Select Products with Price Above a Certain Value
--- Select Reviews with Rating Below a Certain Value
--- Select All Orders with Specific Product
--- Select All Users Who Reviewed a Specific Product
--- Select All Users Who Ordered a Specific Product
--- Select All Users Who Paid by a Specific Method
--- Select All Products Ordered in a Specific Date Range
--- Select All Orders Shipped to a Specific Address
--- Select All Users with Birthdays in a Specific Month
--- Select All Products with a Specific Color
--- Select All Products with a Specific Keyword in Description
--- Count Orders by Month
--- Count Products by Category (if category is added)
--- Average Order Value per User
--- Max and Min Price of Products
--- Select Users with Incomplete Profiles (e.g., missing phone)
--- Select Orders with Missing Address
--- List Products Not Reviewed by Any User
-
 
 
 
