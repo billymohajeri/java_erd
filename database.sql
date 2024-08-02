@@ -240,14 +240,31 @@ FROM products
 JOIN reviews
 ON products.id=product_id;
 
-
-
-
 -- Select All Products in a Wishlist
+SELECT
+wishlists.id,
+users.first_name,
+users.last_name,
+wishlists.name,
+products.name,
+products.description
+FROM products
+JOIN wishlists
+ON  products.id=wishlists.product_id
+JOIN users
+ON wishlists.user_id=users.id;
+
 -- Select All Products in a Wishlist using wishlist_product
+
 -- Count Total Users
+SELECT COUNT(*) AS total_users FROM users;
+
 -- Count Total Orders
+SELECT COUNT(*) AS total_orders FROM orders;
+
 -- Count Total Products
+SELECT COUNT(*) AS total_products FROM products;
+
 -- Count Total Reviews
 -- Count Total Payments
 -- Count Total Products in a Cart per User
