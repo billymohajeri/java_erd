@@ -15,24 +15,25 @@ CREATE TABLE IF NOT EXISTS billyApp.user (
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS billyApp.order (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES users(id),
-    date TIMESTAMP NOT NULL,
+    user_id UUID NOT NULL REFERENCES billyApp.user(id),
+    date_time TIMESTAMP NOT NULL,
     comments TEXT,
-    status VARCHAR(30) NOT NULL,
+    status INTEGER NOT NULL,
     address VARCHAR(255)
 );
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS billyApp.product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(100) NOT NULL,
     price NUMERIC(10,2) NOT NULL,
     description TEXT,
-    image VARCHAR(255),
+    images TEXT[],
     color VARCHAR(50) NOT NULL,
     meta JSON,
-    rating NUMERIC(3,2)
+    rating NUMERIC(2,1),
+    stock INTEGER
 );
 
 CREATE TABLE order_detail (
