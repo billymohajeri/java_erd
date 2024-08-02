@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS billyApp.cart_product (
 
 CREATE TABLE IF NOT EXISTS billyApp.payment (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    order_id UUID NOT NULL REFERENCES orders(id),
-    method VARCHAR(50) NOT NULL,
+    order_id UUID NOT NULL REFERENCES billyApp.order(id),
+    method INTEGER NOT NULL,
     amount NUMERIC(10,2) NOT NULL
 );
 
@@ -69,17 +69,16 @@ CREATE TABLE reviews (
     image VARCHAR(255)
 );
 
-CREATE TABLE wishlists (
+CREATE TABLE IF NOT EXISTS billyApp.wishlist (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES users(id),
-    product_id UUID NOT NULL REFERENCES products(id),
-    name VARCHAR(50)
+    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id),
+    product_id UUID NOT NULL REFERENCES billyApp.product(id),
 );
 
-CREATE TABLE wishlist_product (
+CREATE TABLE IF NOT EXISTS billyApp.wishlist_product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    wishlist_id UUID NOT NULL REFERENCES wishlists(id),
-    product_id UUID NOT NULL REFERENCES products(id)
+    wishlist_id UUID NOT NULL REFERENCES billyApp.wishlist(id),
+    product_id UUID NOT NULL REFERENCES billyApp.product(id)
 );
 
 
