@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS billyApp.user (
 
 CREATE TABLE IF NOT EXISTS billyApp.order (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES billyApp.user(id),
+    user_id UUID NOT NULL REFERENCES billyApp.user(id) ON DELETE CASCADE,
     date_time TIMESTAMP NOT NULL,
     comments TEXT,
     status INTEGER NOT NULL,
@@ -43,28 +43,28 @@ CREATE TABLE IF NOT EXISTS billyApp.product (
 
 CREATE TABLE IF NOT EXISTS billyApp.order_product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    order_id UUID NOT NULL REFERENCES billyApp.order(id),
-    product_id UUID NOT NULL REFERENCES billyApp.product(id)
+    order_id UUID NOT NULL REFERENCES billyApp.order(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE IF NOT EXISTS billyApp.cart (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id)
+    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE IF NOT EXISTS billyApp.cart_product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    cart_id UUID NOT NULL REFERENCES billyApp.cart(id),
-    product_id UUID NOT NULL REFERENCES billyApp.product(id),
+    cart_id UUID NOT NULL REFERENCES billyApp.cart(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE,
     quantity INTEGER NOT NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS billyApp.payment (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    order_id UUID NOT NULL REFERENCES billyApp.order(id),
+    order_id UUID NOT NULL REFERENCES billyApp.order(id) ON DELETE CASCADE,
     method INTEGER NOT NULL,
     amount NUMERIC(10,2) NOT NULL
 );
@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS billyApp.payment (
 
 CREATE TABLE IF NOT EXISTS billyApp.review (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL REFERENCES billyApp.user(id),
-    product_id UUID NOT NULL REFERENCES billyApp.product(id),
+    user_id UUID NOT NULL REFERENCES billyApp.user(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE,
     review TEXT NOT NULL,
     rating NUMERIC(2,1),
     image TEXT[]
@@ -82,15 +82,15 @@ CREATE TABLE IF NOT EXISTS billyApp.review (
 
 CREATE TABLE IF NOT EXISTS billyApp.wishlist (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id),
-    product_id UUID NOT NULL REFERENCES billyApp.product(id)
+    user_id UUID NOT NULL UNIQUE REFERENCES billyApp.user(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE IF NOT EXISTS billyApp.wishlist_product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    wishlist_id UUID NOT NULL REFERENCES billyApp.wishlist(id),
-    product_id UUID NOT NULL REFERENCES billyApp.product(id)
+    wishlist_id UUID NOT NULL REFERENCES billyApp.wishlist(id) ON DELETE CASCADE,
+    product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE
 );
 
 
@@ -165,6 +165,20 @@ INSERT INTO billyApp.cart (user_id) VALUES
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1)),
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1));
 
+-- OR:
+
+INSERT INTO billyApp.cart (user_id) VALUES
+ ('20fbb127-a097-410c-9135-d3ef7e04906c'),
+ ('a5950562-97b8-4f52-ba9e-e4db97b17249'),
+ ('5e07952d-7d40-43ae-b36e-7f6663defd59'),
+ ('05bbc7bb-f21e-4287-95ea-afa8821553dc'),
+ ('01645399-0b95-4a59-8cd7-00f64f79e417'),
+ ('ea5296ec-3d4b-4ddb-a7b8-70cc9c5edc5c'),
+ ('bffbb45e-10b1-4a5b-9dec-1701b54e572c'),
+ ('20e18886-5051-4980-a58f-5600050bbca3'),
+ ('de0d952d-d11b-477e-b63b-e68e66ee0c52'),
+ ('b69780e6-0b19-4521-a586-871ef3df851e');
+
 
 INSERT INTO billyApp.payment (order_id, method, amount) VALUES
 ((SELECT id FROM billyApp.order ORDER BY RANDOM() LIMIT 1), 1, 100.00),
@@ -203,6 +217,18 @@ INSERT INTO billyApp.wishlist (user_id, product_id) VALUES
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1));
+-- OR:
+INSERT INTO billyApp.wishlist (user_id, product_id) VALUES
+ (('20fbb127-a097-410c-9135-d3ef7e04906c'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('a5950562-97b8-4f52-ba9e-e4db97b17249'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('5e07952d-7d40-43ae-b36e-7f6663defd59'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('05bbc7bb-f21e-4287-95ea-afa8821553dc'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('01645399-0b95-4a59-8cd7-00f64f79e417'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('ea5296ec-3d4b-4ddb-a7b8-70cc9c5edc5c'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('bffbb45e-10b1-4a5b-9dec-1701b54e572c'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('20e18886-5051-4980-a58f-5600050bbca3'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('de0d952d-d11b-477e-b63b-e68e66ee0c52'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1)),
+ (('b69780e6-0b19-4521-a586-871ef3df851e'),(SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1));
 
 
 INSERT INTO billyApp.wishlist_product (wishlist_id, product_id) VALUES
@@ -234,7 +260,6 @@ INSERT INTO billyApp.cart_product (cart_id, product_id, quantity) VALUES
 -- QUERIES --
 
 -- Select All Data
-
 SELECT * FROM billyApp.cart;
 SELECT * FROM billyApp.cart_product;
 SELECT * FROM billyApp.order;
@@ -245,6 +270,64 @@ SELECT * FROM billyApp.review;
 SELECT * FROM billyApp.user;
 SELECT * FROM billyApp.wishlist;
 SELECT * FROM billyApp.wishlist_product;
+
+
+-- Select user details by email
+SELECT * FROM billyApp.user
+WHERE email = 'jane.smith@example.com';
+
+SELECT * FROM billyApp.user
+WHERE email LIKE 'j%';
+
+SELECT first_name, last_name, email, phone FROM billyApp.user
+WHERE email LIKE '%@example%';
+
+
+-- Update user address
+UPDATE billyApp.user
+SET address = 'Finland'
+WHERE address = '123 Main St, Anytown, USA';
+
+UPDATE billyApp.user
+SET address = 'Norway'
+WHERE id = 'a5950562-97b8-4f52-ba9e-e4db97b17249';
+
+
+-- Delete a user
+DELETE FROM billyApp.user
+WHERE address = 'Norway';
+
+DELETE FROM billyApp.user
+WHERE id = '20fbb127-a097-410c-9135-d3ef7e04906c';
+
+
+
+
+-- Select all orders for a specific user
+-- Select all products with price greater than a specific amount
+-- Count the number of products in stock
+-- Select orders with a specific status and order by date_time
+-- Join orders and users to get user information for each order
+-- Group products by color and count each group
+-- Select all products in a specific cart
+-- Update the stock of a product
+-- Delete an order
+-- Select all reviews for a specific product
+-- Join users and reviews to get user information for each review
+-- Select all products in a specific wishlist
+-- Count the number of reviews per product
+-- Select all payments for a specific order
+-- Join products and order_product to get order details for each product
+-- Select all products in stock and order by rating
+
+
+
+
+
+
+
+
+
 
 
 -- Select All Orders with User Information
@@ -341,3 +424,13 @@ SELECT COUNT(*) AS total_products FROM products;
 
 
 
+drop table billyApp.cart_product  cascade;
+drop table billyApp.orders  cascade;
+drop table billyApp.order_product cascade;
+drop table billyApp.orders cascade;
+drop table billyApp.payment   cascade;
+drop table billyApp.product  cascade;
+drop table billyApp. cascade;
+drop table billyApp. cascade;
+drop table billyApp. cascade;
+drop table billyApp. cascade;
