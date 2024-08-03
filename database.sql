@@ -348,8 +348,30 @@ ON o.user_id = u.id;
 
 
 -- Group products by color and count each group
+SELECT color, COUNT(*) FROM billyApp.product
+GROUP BY color;
+
+
 -- Select all products in a specific cart
+SELECT
+p.name,
+p.price,
+p.description,
+p.color,
+p.rating,
+p.stock
+FROM billyApp.cart_product cp
+JOIN billyApp.product p
+ON cp.product_id = p.id
+WHERE cart_id = (SELECT id FROM billyApp.cart ORDER BY RANDOM() LIMIT 1);
+
+
 -- Update the stock of a product
+UPDATE billyApp.product
+SET stock = 68
+WHERE name = 'Product4';
+
+
 -- Delete an order
 -- Select all reviews for a specific product
 -- Join users and reviews to get user information for each review
