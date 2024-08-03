@@ -322,15 +322,31 @@ WHERE price > 70;
 
 
 -- Count the number of products in stock
-SELECT  COUNT(id) FROM billyApp.product;
-
-
-
-
+SELECT  COUNT(*) FROM billyApp.product
+WHERE stock > 0;
 
 
 -- Select orders with a specific status and order by date_time
+SELECT * FROM billyApp.order
+WHERE status = 0
+ORDER BY date_time;
+
+
 -- Join orders and users to get user information for each order
+SELECT
+u.first_name,
+u.last_name,
+u.email,
+u.phone,
+u.address,
+o.date_time,
+o.status,
+o.comments
+FROM billyApp.order o
+JOIN billyApp.user u
+ON o.user_id = u.id;
+
+
 -- Group products by color and count each group
 -- Select all products in a specific cart
 -- Update the stock of a product
