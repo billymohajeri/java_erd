@@ -301,11 +301,34 @@ DELETE FROM billyApp.user
 WHERE id = '20fbb127-a097-410c-9135-d3ef7e04906c';
 
 
-
-
 -- Select all orders for a specific user
+SELECT * FROM billyApp.order
+WHERE user_id = '5e07952d-7d40-43ae-b36e-7f6663defd59';
+-- OR:
+SELECT 
+billyApp.user.first_name,
+billyApp.user.last_name,
+billyApp.order.date_time,
+billyApp.order.status
+FROM billyApp.order
+JOIN billyApp.user
+ON billyApp.order.user_id=billyApp.user.id
+WHERE billyApp.user.first_name = 'Alice';
+
+
 -- Select all products with price greater than a specific amount
+SELECT * FROM billyApp.product
+WHERE price > 70;
+
+
 -- Count the number of products in stock
+SELECT  COUNT(id) FROM billyApp.product;
+
+
+
+
+
+
 -- Select orders with a specific status and order by date_time
 -- Join orders and users to get user information for each order
 -- Group products by color and count each group
