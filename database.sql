@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS billyApp.review (
     product_id UUID NOT NULL REFERENCES billyApp.product(id) ON DELETE CASCADE,
     review TEXT NOT NULL,
     rating NUMERIC(2,1),
-    image TEXT[]
+    images TEXT[]
 );
 
 
@@ -193,7 +193,7 @@ INSERT INTO billyApp.payment (order_id, method, amount) VALUES
 ((SELECT id FROM billyApp.order ORDER BY RANDOM() LIMIT 1), 11, 80.00);
 
 
-INSERT INTO billyApp.review (user_id, product_id, review, rating, image) VALUES
+INSERT INTO billyApp.review (user_id, product_id, review, rating, images) VALUES
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1), 'Great product!', 4.5, '{"review1.jpg"}'),
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1), 'Not bad', 4.0, '{"review2.jpg"}'),
 ((SELECT id FROM billyApp.user ORDER BY RANDOM() LIMIT 1), (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1), 'Could be better', 3.5, '{"review3.jpg"}'),
@@ -373,125 +373,71 @@ WHERE name = 'Product4';
 
 
 -- Delete an order
+DELETE FROM billyApp.order
+WHERE status = 1;
+
+
 -- Select all reviews for a specific product
+SELECT review, rating, images
+FROM billyApp.review
+WHERE product_id = (SELECT id FROM billyApp.product ORDER BY RANDOM() LIMIT 1);
+
+
 -- Join users and reviews to get user information for each review
+SELECT
+u.first_name,
+u.last_name,
+u.email,
+u.phone,
+u.address,
+u.birth_date,
+r.review,
+r.rating
+FROM billyApp.user u
+JOIN billyApp.review r
+ON u.id = r.user_id;
+
+
 -- Select all products in a specific wishlist
+SELECT
+p.name,
+p.price,
+p.description,
+p.color,
+p.rating,
+p.stock
+FROM billyApp.product p
+JOIN billyApp.wishlist_product wp
+ON p.id = wp.product_id
+WHERE wp.id = (SELECT id FROM billyApp.wishlist_product ORDER BY RANDOM() LIMIT 1);
+
+
 -- Count the number of reviews per product
+SELECT product_id, COUNT(*) FROM billyApp.review
+GROUP BY product_id;
+-- OR:
+SELECT p.name, COUNT(*) AS "review count"
+FROM billyApp.product p
+JOIN billyApp.review r
+ON p.id = r.product_id
+GROUP BY p.name;
+
+
 -- Select all payments for a specific order
+SELECT * FROM billyApp.payment
+WHERE order_id = (SELECT id FROM billyApp.order ORDER BY RANDOM() LIMIT 1);
+
+
 -- Join products and order_product to get order details for each product
+SELECT
+p.name,
+p.price
+FROM billyApp.product p
+JOIN billyApp.order_product op
+ON p.id = op.product_id;
+
+
 -- Select all products in stock and order by rating
-
-
-
-
-
-
-
-
-
-
-
--- Select All Orders with User Information
-SELECT 
-orders.date,
-orders.status,
-orders.address AS order_address,
-users.first_name,
-users.last_name,
-users.email,
-users.phone
-FROM orders
-JOIN users
-ON orders.user_id=users.id;
-
--- Select All Products in an Order
-SELECT
-orders.id AS order_id,
-orders.date,
-products.name AS product_name,
-products.price,
-FROM orders
-JOIN products
-ON products.id=product_id
-
-
--- Select All Products in a User's Cart
-
-
--- Select All Payments with Order Information
-SELECT
-orders.date,
-orders.status,
-orders.address,
-payments.method,
-payments.amount
-FROM payments
-JOIN orders
-ON payments.order_id=orders.id;
-
--- Select All Reviews for a Product
-SELECT
-products.name,
-reviews.review,
-reviews.rating
-FROM products
-JOIN reviews
-ON products.id=product_id;
-
--- Select All Products in a Wishlist
-SELECT
-wishlists.id,
-users.first_name,
-users.last_name,
-wishlists.name,
-products.name,
-products.description
-FROM products
-JOIN wishlists
-ON  products.id=wishlists.product_id
-JOIN users
-ON wishlists.user_id=users.id;
-
--- Select All Products in a Wishlist using wishlist_product
-
--- Count Total Users
-SELECT COUNT(*) AS total_users FROM users;
-
--- Count Total Orders
-SELECT COUNT(*) AS total_orders FROM orders;
-
--- Count Total Products
-SELECT COUNT(*) AS total_products FROM products;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-drop table billyApp.cart_product  cascade;
-drop table billyApp.orders  cascade;
-drop table billyApp.order_product cascade;
-drop table billyApp.orders cascade;
-drop table billyApp.payment   cascade;
-drop table billyApp.product  cascade;
-drop table billyApp. cascade;
-drop table billyApp. cascade;
-drop table billyApp. cascade;
-drop table billyApp. cascade;
+SELECT * FROM billyApp.product
+WHERE stock > 0
+ORDER BY rating DESC;
